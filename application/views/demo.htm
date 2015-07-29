@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+    <meta name="robots" content="noindex, nofollow, noarchive" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="MobilniUredCom | Demo verzija">
+    <meta name="author" content="Informatika FORTUNO d.o.o.">
+    <title>MobilniUred.Com | Demo verzija</title>
+    <link href="assets/landing/css/bootstrap-login.min.css" rel="stylesheet">
+    <link href="assets/landing/css/demo.css" rel="stylesheet">
+    <!--[if lt IE 9]>
+    <script src="js/html5shiv.js"></script>
+    <script src="js/respond.min.js"></script>
+    <![endif]-->
+    <link rel="shortcut icon" href="assets/landing/images/ico/favicon.ico">
+</head><!--/head-->
+
+<body data-spy="scroll" data-target="#navbar" data-offset="0">
+
+    <section id="login">
+        <div class="container">
+            <div class="box last">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <form id= "loginKorisnika"action='' class="form-signin" method=POST>
+                        <h1>Prijava za Demo verziju</h1>
+                        <br>
+                        <p> </p>
+                        <div class="status alert alert-success" style="display: none"></div>    
+                        <div class="form-group">
+                             <input type="text" name="email" id="email" class="form-control" placeholder="E-mail" value="" />
+                        </div>
+                        <div class="form-group">
+                            <input type="password" name="password" id="password" class="form-control" placeholder="Lozinka" value="" />
+                        </div> 
+                        
+                        <div class="text-center">
+                             <input type="submit" id="submitLogin" name="submitLogin"  class="btn btn-primary" value="Prijava"/> 
+                        </div>
+                    </form>
+                    </div><!--/.col-sm-6-->
+                    <div class="col-sm-6">
+                        <h1>Info</h1>
+                        <br>
+                        <p></p>
+                        <ul>
+                            <li>E-mail: demo@fortuno.hr</li>
+                            <li>Lozinka: demo</li>
+                        </ul>
+                        <p></p>
+                        <div class="status alert alert-success" style="display: none"></div>  
+                        <div class="text-center">
+                            <a class="btn btn-primary" href="http://mobilniured.com/"/><i class="glyphicon glyphicon-arrow-left"></i> Povratak na početnu stranicu</a>
+                        </div>
+                    </div><!--/.col-sm-6-->
+                </div><!--/.row-->
+            </div><!--/.box-->
+        </div><!--/.container-->
+    </section><!--/#login-->
+
+    <footer id="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-6">
+                    &copy; 2015 <a target="_blank" href="http://mobilniured.com" title="MobilniUred.Com">MobilniUred.Com</a>. Sva prava pridržana.
+                </div>
+                <div class="col-sm-6">
+                    <a target="_blank" href="http://www.fortuno.hr/" title="Informatika FORTUNO d.o.o." class="pull-right">Izrada i održavanje: Informatika FORTUNO d.o.o.</a>
+                </div>
+            </div>
+        </div>
+    </footer><!--/#footer-->
+
+    <script src="assets/landing/js/jquery.js"></script>
+    <script src="assets/landing/js/bootstrap.min.js"></script>
+    <script src="assets/landing/js/jquery.isotope.min.js"></script>
+    <script src="assets/landing/js/jquery.prettyPhoto.js"></script>
+    <script src="assets/landing/js/main.js"></script>
+</body>
+</html>
+
+<script type="text/javascript">
+
+$(document).ready(function() {
+        
+    //LoadBootstrapValidatorScript(FormValidator);
+    
+    
+    $('#operaterForm2').submit(function(evnt){
+        //$('#submitRegister').attr("disabled", true);   
+  
+        evnt.preventDefault();
+        $.post("<?php echo site_url().'stranica/register'; ?>",
+        $("#operaterForm2").serialize(), 
+        function (data) {
+            var obj = $.parseJSON(data);
+
+            if (obj.uspjelo == 0)
+            {   
+                $('#poruka').html(obj.poruka); 
+                $('#poruka').removeClass( "hidden" ) 
+                $('#poruka').show(); 
+                  setTimeout(function() {
+                    $('#poruka').fadeOut('fast'); 
+                    }, 5000);
+               
+            }
+            else
+            {      
+                $('#poruka').html(obj.poruka); 
+                $('#poruka').removeClass( "hidden" ) 
+                $('#poruka').show(); 
+                
+            }
+        });
+
+    });    
+    
+    
+    $('#loginKorisnika').submit(function(evnt){
+        //$('#submitRegister').attr("disabled", true);   
+        
+        evnt.preventDefault();
+        $.post("<?php echo site_url().'stranica/login'; ?>",
+
+        $("#loginKorisnika").serialize(), 
+        function (data) {
+                 
+            var obj = $.parseJSON(data);
+
+            if (obj.uspjelo == 0) 
+            {   
+                $('#poruka2').html(obj.poruka); 
+                $('#poruka2').removeClass( "hidden" ) 
+                $('#poruka2').show(); 
+                  setTimeout(function() {
+                    $('#poruka2').fadeOut('fast'); 
+                    }, 5000);
+               
+            }
+            else
+            {   
+                //redirect na pocetnu
+                window.location.href = obj.url;  
+
+            } 
+        });
+
+    });
+    
+    
+    
+      
+    
+
+}); 
+
+function resetirajLozinku()
+{
+   
+   
+    if($("#resetPass").is(":visible"))
+     {
+        $("#submitLogin").removeClass("hidden"); 
+        $("#resetPass").hide(); 
+        $("#resetButton").hide(); 
+     }
+     else
+     {
+        $("#submitLogin").addClass("hidden");
+        $("#resetPass").show(); 
+        $("#resetButton").show(); 
+ 
+     }
+}
+
+
+$('#odustani').click(function(evnt){
+    evnt.preventDefault();      
+    $("#submitLogin").removeClass("hidden"); 
+    $("#resetPass").hide(); 
+    $("#resetButton").hide();
+});
+  
+
+$('#resetiraj').click(function(evnt){
+        //$('#submitRegister').attr("disabled", true);   
+        //posalji novi pass na navedenu email addresu
+        //upisani pass mora postojati u bazi
+        mail = $('#mail').val();
+        
+        evnt.preventDefault();
+                
+        $.post("<?php echo site_url().'registracija/resetPass'; ?>", {mail: mail},
+         
+        function (data) {
+            var obj = $.parseJSON(data);
+
+            if (obj.uspjelo == 0)
+            {   
+                $('#poruka2').html(obj.poruka); 
+                $('#poruka2').removeClass( "hidden" ) 
+                $('#poruka2').show(); 
+                  setTimeout(function() {
+                    $('#poruka2').fadeOut('fast'); 
+                    }, 5000);
+               
+            }
+            else
+            {      
+                $('#poruka2').html(obj.poruka); 
+                $('#poruka2').removeClass( "hidden" ) 
+                $('#poruka2').show(); 
+                
+                $("#submitLogin").removeClass("hidden"); 
+                $("#resetPass").hide(); 
+                $("#resetButton").hide(); 
+                
+            }
+        });
+        
+
+});
+
+</script>
